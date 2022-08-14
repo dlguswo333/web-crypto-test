@@ -16,7 +16,7 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   mode: development ? 'development' : 'production',
-  devtool: development ? 'source-map' : '',
+  devtool: development ? 'inline-source-map' : false,
   devServer: {
     liveReload: true,
     hot: true,
