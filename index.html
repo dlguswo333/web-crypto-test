@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Web Crypto Test</title><style>* {
+            box-sizing: border-box;
+        }
+
+        .outer-section {
+            border: 1px solid black;
+            margin: 5px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .inner-section {
+            display: flex;
+        }
+
+        .inner-section>* {
+            flex-grow: 1;
+            padding: 5px;
+        }
+
+        .inner-section h2 {
+            display: inline-block;
+        }
+
+        h1 {
+            margin-top: 4px;
+        }
+        h2 {
+            margin-top: 2px;
+        }
+
+        textarea {
+            resize: none;
+            width: 100%;
+            height: 6em;
+            font-family: monospace;
+        }
+
+        button {
+            margin: 2px;
+            padding: 4px 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            border-width: 1px;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+        button:active {
+            background-color: #ccc;
+        }
+
+        label {
+            margin-right: 5px;
+        }</style><script defer="defer" src="bundle.js"></script></head><body><section class="outer-section" id="aes"><h1>AES</h1><h2>Content</h2><textarea id="aes-contents"></textarea> <label for="aes-repeat">Repeat</label><input type="number" value="1000" id="aes-repeat"><section class="inner-section"><div id="forge"><div><h2>forge</h2><button id="aes-forge-button">Run</button></div><textarea id="aes-forge-output" readonly="readonly"></textarea></div><div id="crypto"><div><h2>web crypto</h2><button id="aes-crypto-button">Run</button></div><textarea id="aes-crypto-output" readonly="readonly"></textarea></div></section></section><section class="outer-section" id="rsa"><h1>RSA</h1><h2>Content</h2><textarea id="rsa-contents"></textarea> <label for="rsa-repeat">Repeat</label><input type="number" value="500" id="rsa-repeat"><section class="inner-section"><div id="forge"><div><h2>forge</h2><button id="rsa-forge-button">Run</button></div><textarea id="rsa-forge-output" readonly="readonly"></textarea></div><div id="crypto"><div><h2>web crypto</h2><button id="rsa-crypto-button">Run</button></div><textarea id="rsa-crypto-output" readonly="readonly"></textarea></div></section></section></body></html>
