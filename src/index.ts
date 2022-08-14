@@ -59,7 +59,7 @@ function attachRunner () {
         key
       ));
       if (data !== decryptedData) {
-        throw new Error('Web Crypto AES logics not valid');
+        throw new Error('AES Web Crypto logics not valid');
       }
     }, repeat);
     aesCryptoOutput.value += interval.toString() + ' ms\n';
@@ -134,7 +134,7 @@ function attachRunner () {
       const encryptedData = rsaEncryptForge(data, publicKey);
       const decryptedData = rsaDecryptForge(encryptedData, privateKey);
       if (data !== decryptedData) {
-        throw new Error('rsa Forge logics not valid');
+        throw new Error('RSA Forge logics not valid');
       }
     }, repeat);
     rsaForgeOutput.value += getEnDecrpytionBenchmarkMessage(interval.toString());
