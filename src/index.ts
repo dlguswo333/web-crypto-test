@@ -1,6 +1,7 @@
-import { aesDecryptForge, aesEncryptForge, createRandomStringForge } from './forge';
-import { aesEncryptCrypto, createAesKeyCrypto, aesDecryptCrypto, createRandomBytesCrypto } from './webCrypto';
-import { arrayBufferToString, stringToArrayBuffer } from './util';
+import { aesDecryptForge, aesEncryptForge, createRandomStringForge, createRsaKeyForge, rsaDecryptForge, rsaEncryptForge } from './forge';
+import { aesEncryptCrypto, createAesKeyCrypto, aesDecryptCrypto, createRandomBytesCrypto, createRsaKeyCrypto, rsaEncryptCrypto, rsaDecryptCrypto } from './webCrypto';
+import { arrayBufferToString, formatMessage as formatMessage, stringToArrayBuffer } from './util';
+import { pki } from 'node-forge';
 
 const aesContents = document.getElementById('aes-contents') as HTMLTextAreaElement;
 const aesRepeat = document.getElementById('aes-repeat') as HTMLInputElement;
@@ -8,8 +9,17 @@ const aesCryptoButton = document.getElementById('aes-crypto-button') as HTMLButt
 const aesCryptoOutput = document.getElementById('aes-crypto-output') as HTMLTextAreaElement;
 const aesForgeButton = document.getElementById('aes-forge-button') as HTMLButtonElement;
 const aesForgeOutput = document.getElementById('aes-forge-output') as HTMLTextAreaElement;
+const rsaContents = document.getElementById('rsa-contents') as HTMLTextAreaElement;
+const rsaRepeat = document.getElementById('rsa-repeat') as HTMLInputElement;
+const rsaCryptoButton = document.getElementById('rsa-crypto-button') as HTMLButtonElement;
+const rsaCryptoOutput = document.getElementById('rsa-crypto-output') as HTMLTextAreaElement;
+const rsaForgeButton = document.getElementById('rsa-forge-button') as HTMLButtonElement;
+const rsaForgeOutput = document.getElementById('rsa-forge-output') as HTMLTextAreaElement;
 
-async function asyncBenchmark (func: () => Promise<void>, repeat: number) {
+const getKeyGenerationBenchmarkMessage = formatMessage('key generation:', 'ms');
+const getEnDecrpytionBenchmarkMessage = formatMessage('En/Decryption:', 'ms');
+
+async function asyncBenchmark (func: () => Promise<void>, repeat = 1) {
   const start = performance.now();
   for (let i = 0;i < repeat;++i) {
     await func();
@@ -18,7 +28,7 @@ async function asyncBenchmark (func: () => Promise<void>, repeat: number) {
   return end - start;
 }
 
-function benchmark (func: () => void, repeat: number) {
+function benchmark (func: () => void, repeat = 1) {
   const start = performance.now();
   for (let i = 0;i < repeat;++i) {
     func();
@@ -76,10 +86,58 @@ function attachRunner () {
         key
       );
       if (data !== decryptedData) {
-        throw new Error('AES logics not valid');
+        throw new Error('AES Forge logics not valid');
       }
     }, repeat);
     aesForgeOutput.value += interval.toString() + ' ms\n';
+  });
+
+  rsaCryptoButton.addEventListener('click', async () => {
+    const repeat = Number(rsaRepeat?.value);
+    if (!(repeat > 0)) {
+      return;
+    }
+    const data = rsaContents.value;
+    let privateKey: CryptoKey, publicKey: CryptoKey;
+    let interval = await asyncBenchmark(async () => {
+      const keyPair = await createRsaKeyCrypto();
+      privateKey = keyPair.privateKey;
+      publicKey = keyPair.publicKey;
+    });
+    rsaCryptoOutput.value += getKeyGenerationBenchmarkMessage(interval.toString());
+
+    interval = await asyncBenchmark(async () => {
+      const encryptedData = await rsaEncryptCrypto(stringToArrayBuffer(data), publicKey);
+      const decryptedData = arrayBufferToString(await rsaDecryptCrypto(encryptedData, privateKey));
+      if (data !== decryptedData) {
+        throw new Error('RSA Web Crypto logics not valid');
+      }
+    }, repeat);
+    rsaCryptoOutput.value += getEnDecrpytionBenchmarkMessage(interval.toString());
+  });
+
+  rsaForgeButton.addEventListener('click', () => {
+    const repeat = Number(rsaRepeat?.value);
+    if (!(repeat > 0)) {
+      return;
+    }
+    const data = rsaContents.value;
+    let privateKey: pki.rsa.PrivateKey, publicKey: pki.rsa.PublicKey;
+    let interval = benchmark(() => {
+      const keyPair = createRsaKeyForge();
+      privateKey = keyPair.privateKey;
+      publicKey = keyPair.publicKey;
+    });
+    rsaForgeOutput.value += getKeyGenerationBenchmarkMessage(interval.toString());
+
+    interval = benchmark(() => {
+      const encryptedData = rsaEncryptForge(data, publicKey);
+      const decryptedData = rsaDecryptForge(encryptedData, privateKey);
+      if (data !== decryptedData) {
+        throw new Error('rsa Forge logics not valid');
+      }
+    }, repeat);
+    rsaForgeOutput.value += getEnDecrpytionBenchmarkMessage(interval.toString());
   });
 }
 

@@ -14,3 +14,9 @@ export function stringToBase64 (str: string) {
 export function base64ToString (b64: string) {
   return decodeURI(atob(b64));
 }
+
+export function formatMessage (prefix: string, postfix: string) {
+  return function (log: string) {
+    return `${prefix} ${log} ${postfix}\n`;
+  };
+}
