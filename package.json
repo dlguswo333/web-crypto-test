@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=0 webpack --config webpack.config.js",
-    "start": "cross-env NODE_ENV=1 webpack serve --config webpack.config.js",
+    "build": "cross-env DEVELOPMENT=0 webpack --config webpack.config.js",
+    "start": "cross-env DEVELOPMENT=1 webpack serve --config webpack.config.js",
     "test": "ts-node src/test.ts"
   },
   "keywords": [

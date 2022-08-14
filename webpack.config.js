@@ -2,8 +2,7 @@ const path = require('path');
 const process = require('process')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const development = !!process.env.NODE_ENV;
-
+const development = process.env.DEVELOPMENT ? !!Number(process.env.DEVELOPMENT) : true;
 console.log(`Webpack building in ${development ? 'development' : 'production'}`)
 
 module.exports = {
@@ -33,7 +32,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'src/index.html',
+      minify: {
+        collapseWhitespace: true
+      }
     })
   ],
 };
