@@ -5,7 +5,7 @@ export async function createAesKeyCrypto () {
   }, true, ['encrypt', 'decrypt']);
 }
 
-export async function aesEncryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key: CryptoKey) {
+export async function aesEncryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key: CryptoKey): Promise<ArrayBuffer> {
   const result = await crypto.subtle.encrypt({
     name: 'AES-CBC',
     iv: iv,
@@ -13,10 +13,15 @@ export async function aesEncryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key:
   return result;
 }
 
-export async function aesDecryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key: CryptoKey) {
+export async function aesDecryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key: CryptoKey): Promise<ArrayBuffer> {
   const result = await crypto.subtle.decrypt({
     name: 'AES-CBC',
     iv: iv,
   }, key, data);
   return result;
+}
+
+export function createRandomBytesCrypto (length: number) {
+  const bytes = new Uint8Array(length);
+  return crypto.getRandomValues(bytes);
 }

@@ -1,8 +1,8 @@
 import * as assert from 'assert';
-import { arrayBufferToString, base64ToString, stringToArrayBuffer, stringToBase64 } from './index';
+import { arrayBufferToString, stringToArrayBuffer } from './util';
 
 let str = 'helloWorld';
-const encodeAndDecode = (str: string) => base64ToString(arrayBufferToString(stringToArrayBuffer(stringToBase64(str))));
+const encodeAndDecode = (str: string) => arrayBufferToString(stringToArrayBuffer((str)));
 
 assert.deepStrictEqual(encodeAndDecode(str), str);
 
