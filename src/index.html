@@ -11,14 +11,22 @@
             box-sizing: border-box;
         }
 
-        .outer-section {
+        section {
             border: 1px solid black;
             margin: 5px;
-            padding: 4px 10px;
             border-radius: 4px;
             max-width: 900px;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        .heading-section {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .outer-section {
+            padding: 4px 10px;
         }
 
         .inner-section {
@@ -70,6 +78,9 @@
 </head>
 
 <body>
+    <section class="heading-section">
+        This webpage demonstrates AES and RSA encryption/decryption and compares <a href="https://www.npmjs.com/package/node-forge">node-forge</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API">Web Crypto API</a>.
+    </section>
     <section class="outer-section" id="aes">
         <h1>AES</h1>
         <h2>Content</h2>
