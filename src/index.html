@@ -13,29 +13,40 @@
 
         section {
             border: 1px solid black;
+            background-color: #f9f7f7;
             margin: 5px;
+            margin-bottom: 25px;
             border-radius: 4px;
             max-width: 900px;
             margin-left: auto;
             margin-right: auto;
-        }
-
-        .heading-section {
-            padding: 10px;
-            margin-bottom: 20px;
+            font-family: sans-serif;
         }
 
         .outer-section {
+            border-radius: 0px;
             padding: 4px 10px;
+            border: none;
+            box-shadow: -2px 2px 2px 2px #eee;
+        }
+
+        .heading-section {
+            padding: 20px 10px;
+            border: none;
         }
 
         .inner-section {
             display: flex;
+            margin: 20px 0;
+            padding: none;
+            border: none;
         }
 
         .inner-section>* {
             flex-grow: 1;
-            padding: 5px;
+        }
+        .inner-section>*:not(:last-child) {
+            padding: 0 4px 0 0;
         }
 
         .inner-section h2 {
@@ -56,18 +67,29 @@
             font-family: monospace;
         }
 
+        textarea:read-only {
+            background-color: #eee;
+            outline-color: #aaa;
+        }
+
+        input[type=number] {
+            font-size: 1.01rem;
+            width: 120px;
+        }
+
         button {
             margin: 2px;
-            padding: 4px 10px;
+            padding: 4px 8px;
             cursor: pointer;
-            border-radius: 10px;
-            border-width: 1px;
+            border: none;
+            background-color: #ddd;
+            box-shadow: 0 0 0 1px #999;
         }
         button:hover {
-            background-color: #ddd;
+            background-color: #ccc;
         }
         button:active {
-            background-color: #ccc;
+            background-color: #bbb;
         }
 
         label {
@@ -78,7 +100,7 @@
 </head>
 
 <body>
-    <section class="heading-section">
+    <section class="outer-section heading-section">
         This webpage demonstrates AES and RSA encryption/decryption and compares <a href="https://www.npmjs.com/package/node-forge">node-forge</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API">Web Crypto API</a>.
     </section>
     <section class="outer-section" id="aes">
@@ -92,14 +114,14 @@
                     <h2>forge</h2>
                     <button id="aes-forge-button">Run</button>
                 </div>
-                <textarea id="aes-forge-output" readonly></textarea>
+                <textarea id="aes-forge-output" readonly title="readonly"></textarea>
             </div>
             <div id="crypto">
                 <div>
                     <h2>web crypto</h2>
                     <button id="aes-crypto-button">Run</button>
                 </div>
-                <textarea id="aes-crypto-output" readonly></textarea>
+                <textarea id="aes-crypto-output" readonly title="readonly"></textarea>
             </div>
         </section>
     </section>
@@ -114,14 +136,14 @@
                     <h2>forge</h2>
                     <button id="rsa-forge-button">Run</button>
                 </div>
-                <textarea id="rsa-forge-output" readonly></textarea>
+                <textarea id="rsa-forge-output" readonly title="readonly"></textarea>
             </div>
             <div id="crypto">
                 <div>
                     <h2>web crypto</h2>
                     <button id="rsa-crypto-button">Run</button>
                 </div>
-                <textarea id="rsa-crypto-output" readonly></textarea>
+                <textarea id="rsa-crypto-output" readonly title="readonly"></textarea>
             </div>
         </section>
     </section>
