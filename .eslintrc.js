@@ -11,6 +11,7 @@ module.exports = {
     'keyword-spacing': 'error',
     'space-before-function-paren': ['error', 'always'],
     'space-before-blocks': ['error', 'always'],
-    'arrow-spacing': 'error'
+    'arrow-spacing': 'error',
+    '@typescript-eslint/type-annotation-spacing': 'error',
   }
 };
