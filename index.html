@@ -21,6 +21,22 @@
             box-shadow: -2px 2px 2px 2px #eee;
         }
 
+        .content-title {
+            height: fit-content;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content-title > span {
+            display: flex;
+            align-items: center;
+        }
+
+
+        .outer-section h2 {
+            display: inline-block;
+        }
+
         .heading-section {
             padding: 20px 10px;
             border: none;
@@ -85,4 +101,4 @@
 
         label {
             margin-right: 5px;
-        }</style><script defer="defer" src="bundle.js"></script></head><body><section class="outer-section heading-section">This webpage demonstrates AES and RSA encryption/decryption and compares <a href="https://www.npmjs.com/package/node-forge">node-forge</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API">Web Crypto API</a>.</section><section class="outer-section" id="aes"><h1>AES</h1><h2>Content</h2><textarea id="aes-contents"></textarea> <label for="aes-repeat">Repeat</label><input type="number" value="1000" id="aes-repeat"><section class="inner-section"><div id="forge"><div><h2>forge</h2><button id="aes-forge-button">Run</button></div><textarea id="aes-forge-output" readonly="readonly" title="readonly"></textarea></div><div id="crypto"><div><h2>web crypto</h2><button id="aes-crypto-button">Run</button></div><textarea id="aes-crypto-output" readonly="readonly" title="readonly"></textarea></div></section></section><section class="outer-section" id="rsa"><h1>RSA</h1><h2>Content</h2><textarea id="rsa-contents"></textarea> <label for="rsa-repeat">Repeat</label><input type="number" value="500" id="rsa-repeat"><section class="inner-section"><div id="forge"><div><h2>forge</h2><button id="rsa-forge-button">Run</button></div><textarea id="rsa-forge-output" readonly="readonly" title="readonly"></textarea></div><div id="crypto"><div><h2>web crypto</h2><button id="rsa-crypto-button">Run</button></div><textarea id="rsa-crypto-output" readonly="readonly" title="readonly"></textarea></div></section></section></body></html>
+        }</style><script defer="defer" src="bundle.js"></script></head><body><section class="outer-section heading-section">This webpage demonstrates AES and RSA encryption/decryption and compares <a href="https://www.npmjs.com/package/node-forge">node-forge</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API">Web Crypto API</a>.</section><section class="outer-section" id="aes"><h1>AES</h1><div class="content-title"><h2>Content</h2><span id="aes-contents-length">0B</span></div><textarea id="aes-contents"></textarea> <label for="aes-repeat">Repeat</label><input type="number" value="1000" id="aes-repeat"><section class="inner-section"><div id="forge"><div><h2>forge</h2><button id="aes-forge-button">Run</button></div><textarea id="aes-forge-output" readonly="readonly" title="readonly"></textarea></div><div id="crypto"><div><h2>web crypto</h2><button id="aes-crypto-button">Run</button></div><textarea id="aes-crypto-output" readonly="readonly" title="readonly"></textarea></div></section></section><section class="outer-section" id="rsa"><h1>RSA</h1><h2>Content</h2><div class="content-title"><h2>Content</h2><span id="rsa-contents-length">0B</span></div><textarea id="rsa-contents"></textarea> <label for="rsa-repeat">Repeat</label><input type="number" value="500" id="rsa-repeat"><section class="inner-section"><div id="forge"><div><h2>forge</h2><button id="rsa-forge-button">Run</button></div><textarea id="rsa-forge-output" readonly="readonly" title="readonly"></textarea></div><div id="crypto"><div><h2>web crypto</h2><button id="rsa-crypto-button">Run</button></div><textarea id="rsa-crypto-output" readonly="readonly" title="readonly"></textarea></div></section></section></body></html>
