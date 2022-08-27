@@ -1,6 +1,6 @@
 import { aesDecryptForge, aesEncryptForge, createRandomStringForge, createRsaKeyForge, rsaDecryptForge, rsaEncryptForge } from './forge';
 import { aesEncryptCrypto, createAesKeyCrypto, aesDecryptCrypto, createRandomBytesCrypto, createRsaKeyCrypto, rsaEncryptCrypto, rsaDecryptCrypto } from './webCrypto';
-import { arrayBufferToString, formatMessage as formatMessage, stringToArrayBuffer } from './util';
+import { arrayBufferToString, formatMessage as formatMessage, getStringLengthInBytes, stringToArrayBuffer, useThrottle } from './util';
 import { pki } from 'node-forge';
 
 const aesContents = document.getElementById('aes-contents') as HTMLTextAreaElement;
@@ -141,4 +141,20 @@ function attachRunner () {
   });
 }
 
+function attachOnTypeListener () {
+  const aesLengthSpan = document.getElementById('aes-contents-length') as HTMLSpanElement;
+  const rsaLengthSpan = document.getElementById('rsa-contents-length') as HTMLSpanElement;
+
+  aesContents.addEventListener('input', useThrottle(() => {
+    const bytesLength = getStringLengthInBytes(aesContents.value);
+    aesLengthSpan.innerText = bytesLength.toString() + 'B';
+  }, 200));
+
+  rsaContents.addEventListener('input', useThrottle(() => {
+    const bytesLength = getStringLengthInBytes(rsaContents.value);
+    rsaLengthSpan.innerText = bytesLength.toString() + 'B';
+  }, 200));
+}
+
 attachRunner();
+attachOnTypeListener();
