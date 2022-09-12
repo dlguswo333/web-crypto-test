@@ -5,6 +5,7 @@ module.exports = {
   root: true,
   ignorePatterns: ['*.js'],
   rules: {
+    'indent': ['error', 2],
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
     'space-infix-ops': 'error',

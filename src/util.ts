@@ -28,15 +28,15 @@ export function formatMessage (prefix: string, postfix: string) {
 }
 
 export function useThrottle<T extends unknown[]> (func: (...args: T) => void, throttleMilliSecond: number) {
-	let pending = false;
-	return (...args: T) => {
-		if (pending) {
-			return;
-		}
-		pending = true;
-		setTimeout(() => {
-			func(...args);
-			pending = false;
-		}, throttleMilliSecond);
-	};
+  let pending = false;
+  return (...args: T) => {
+    if (pending) {
+      return;
+    }
+    pending = true;
+    setTimeout(() => {
+      func(...args);
+      pending = false;
+    }, throttleMilliSecond);
+  };
 }
