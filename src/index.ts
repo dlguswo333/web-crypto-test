@@ -21,8 +21,14 @@ const getEnDecrpytionBenchmarkMessage = formatMessage('En/Decryption:', 'ms');
 
 async function asyncBenchmark (func: () => Promise<void>, repeat = 1) {
   const start = performance.now();
-  for (let i = 0;i < repeat;++i) {
-    await func();
+  try {
+    for (let i = 0;i < repeat;++i) {
+      await func();
+    }
+  } catch (e) {
+    const end = performance.now();
+    alert(e?.message);
+    return end - start;
   }
   const end = performance.now();
   return end - start;
@@ -30,8 +36,14 @@ async function asyncBenchmark (func: () => Promise<void>, repeat = 1) {
 
 function benchmark (func: () => void, repeat = 1) {
   const start = performance.now();
-  for (let i = 0;i < repeat;++i) {
-    func();
+  try {
+    for (let i = 0;i < repeat;++i) {
+      func();
+    }
+  } catch (e) {
+    const end = performance.now();
+    alert(e?.message);
+    return end - start;
   }
   const end = performance.now();
   return end - start;
@@ -107,10 +119,14 @@ function attachRunner () {
     rsaCryptoOutput.value += getKeyGenerationBenchmarkMessage(interval.toString());
 
     interval = await asyncBenchmark(async () => {
-      const encryptedData = await rsaEncryptCrypto(stringToArrayBuffer(data), publicKey);
-      const decryptedData = arrayBufferToString(await rsaDecryptCrypto(encryptedData, privateKey));
-      if (data !== decryptedData) {
-        throw new Error('RSA Web Crypto logics not valid');
+      try {
+        const encryptedData = await rsaEncryptCrypto(stringToArrayBuffer(data), publicKey);
+        const decryptedData = arrayBufferToString(await rsaDecryptCrypto(encryptedData, privateKey));
+        if (data !== decryptedData) {
+          throw new Error('RSA Web Crypto logics not valid');
+        }
+      } catch (e) {
+        throw new Error(e?.message || 'RSA Web Crypto failed. Possibly because the input message length is too long.');
       }
     }, repeat);
     rsaCryptoOutput.value += getEnDecrpytionBenchmarkMessage(interval.toString());
