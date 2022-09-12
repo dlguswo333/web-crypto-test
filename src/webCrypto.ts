@@ -27,7 +27,10 @@ export async function createRsaKeyCrypto () {
       name: 'RSA-OAEP',
       modulusLength: 2048,
       publicExponent: new Uint8Array([1, 0, 1]),
-      hash: 'SHA-256'
+      // NOTE node-forge seems to use SHA-1 hash when generating key pair,
+      // but it is not known how to control the hash function in node-forge.
+      // For consistency, use SHA-1 in Web Crypto API as well.
+      hash: 'SHA-1'
     },
     false,
     ['encrypt', 'decrypt']
