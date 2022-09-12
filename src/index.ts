@@ -21,8 +21,14 @@ const getEnDecrpytionBenchmarkMessage = formatMessage('En/Decryption:', 'ms');
 
 async function asyncBenchmark (func: () => Promise<void>, repeat = 1) {
   const start = performance.now();
-  for (let i = 0;i < repeat;++i) {
-    await func();
+  try {
+    for (let i = 0;i < repeat;++i) {
+      await func();
+    }
+  } catch (e) {
+    const end = performance.now();
+    alert(e?.message);
+    return end - start;
   }
   const end = performance.now();
   return end - start;
@@ -30,8 +36,14 @@ async function asyncBenchmark (func: () => Promise<void>, repeat = 1) {
 
 function benchmark (func: () => void, repeat = 1) {
   const start = performance.now();
-  for (let i = 0;i < repeat;++i) {
-    func();
+  try {
+    for (let i = 0;i < repeat;++i) {
+      func();
+    }
+  } catch (e) {
+    const end = performance.now();
+    alert(e?.message);
+    return end - start;
   }
   const end = performance.now();
   return end - start;
