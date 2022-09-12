@@ -119,10 +119,14 @@ function attachRunner () {
     rsaCryptoOutput.value += getKeyGenerationBenchmarkMessage(interval.toString());
 
     interval = await asyncBenchmark(async () => {
-      const encryptedData = await rsaEncryptCrypto(stringToArrayBuffer(data), publicKey);
-      const decryptedData = arrayBufferToString(await rsaDecryptCrypto(encryptedData, privateKey));
-      if (data !== decryptedData) {
-        throw new Error('RSA Web Crypto logics not valid');
+      try {
+        const encryptedData = await rsaEncryptCrypto(stringToArrayBuffer(data), publicKey);
+        const decryptedData = arrayBufferToString(await rsaDecryptCrypto(encryptedData, privateKey));
+        if (data !== decryptedData) {
+          throw new Error('RSA Web Crypto logics not valid');
+        }
+      } catch (e) {
+        throw new Error(e?.message || 'RSA Web Crypto failed. Possibly because the input message length is too long.');
       }
     }, repeat);
     rsaCryptoOutput.value += getEnDecrpytionBenchmarkMessage(interval.toString());
