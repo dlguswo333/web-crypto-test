@@ -10,7 +10,8 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname + '/dist'),
-    clean: true
+    clean: true,
+    assetModuleFilename: '[hash][ext]'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
@@ -29,14 +30,21 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.(jpe?g|png)$/,
+        type: 'asset/resource',
+      },
+      {
+        // NOTE html-loader changes src of img autoMAGICally when building.
+        test: /\.html$/,
+        loader: "html-loader",
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      minify: {
-        collapseWhitespace: true
-      }
-    })
+      minify: 'auto',
+    }),
   ],
 };
