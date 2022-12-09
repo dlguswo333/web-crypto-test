@@ -1,6 +1,7 @@
 const path = require('path');
 const process = require('process')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ForkTsCheckerPlugin =require('fork-ts-checker-webpack-plugin')
 
 const development = process.env.DEVELOPMENT ? !!Number(process.env.DEVELOPMENT) : true;
 console.log(`Webpack building in ${development ? 'development' : 'production'}`)
@@ -46,5 +47,6 @@ module.exports = {
       template: 'src/index.html',
       minify: 'auto',
     }),
+    new ForkTsCheckerPlugin(),
   ],
 };
