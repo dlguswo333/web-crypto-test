@@ -1,5 +1,10 @@
 import { cipher, pki, random, util } from 'node-forge';
 
+/**
+ * NOTE AES and RSA in node-forge seem to emit an error if non-ASCII data are given directly (e.g. CJK characters).
+ * Therefore use utf-8 en/decoding before encryption and after decryption.
+ */
+
 export function createRandomStringForge (length: number) {
   return random.getBytesSync(length);
 }
@@ -27,10 +32,6 @@ export function createRsaKeyForge () {
   return keyPair;
 }
 
-/**
- * Unlike AES, RSA decryption emits an error if non-ASCII data are given (e.g. Korean characters).
- * Thus use utf-8 en/decoding before and after.
- */
 export function rsaEncryptForge (data: string, key: pki.rsa.PublicKey) {
   const result = key.encrypt(util.encodeUtf8(data), 'RSA-OAEP');
   return result;
