@@ -5,11 +5,11 @@ import { cipher, pki, random, util } from 'node-forge';
  * Therefore use utf-8 en/decoding before encryption and after decryption.
  */
 
-export function createRandomStringForge (length: number) {
+export function createRandomString (length: number) {
   return random.getBytesSync(length);
 }
 
-export function aesEncryptForge (data: string, iv: string, key: string) {
+export function aesEncrypt (data: string, iv: string, key: string) {
   const cip = cipher.createCipher('AES-CBC', key);
   cip.start({ iv: iv });
   cip.update(util.createBuffer(util.encodeUtf8(data)));
@@ -18,7 +18,7 @@ export function aesEncryptForge (data: string, iv: string, key: string) {
   return result;
 }
 
-export function aesDecryptForge (data: util.ByteStringBuffer, iv: string, key: string) {
+export function aesDecrypt (data: util.ByteStringBuffer, iv: string, key: string) {
   const cip = cipher.createDecipher('AES-CBC', key);
   cip.start({ iv: iv });
   cip.update(data);
@@ -27,17 +27,17 @@ export function aesDecryptForge (data: util.ByteStringBuffer, iv: string, key: s
   return result;
 }
 
-export function createRsaKeyForge () {
+export function createRsaKey () {
   const keyPair = pki.rsa.generateKeyPair(2048, 0x010001);
   return keyPair;
 }
 
-export function rsaEncryptForge (data: string, key: pki.rsa.PublicKey) {
+export function rsaEncrypt (data: string, key: pki.rsa.PublicKey) {
   const result = key.encrypt(util.encodeUtf8(data), 'RSA-OAEP');
   return result;
 }
 
-export function rsaDecryptForge (data: string, key: pki.rsa.PrivateKey) {
+export function rsaDecrypt (data: string, key: pki.rsa.PrivateKey) {
   const result = util.decodeUtf8(key.decrypt(data, 'RSA-OAEP'));
   return result;
 }
