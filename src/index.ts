@@ -1,6 +1,6 @@
 import * as Forge from './forge';
 import * as WebCrypto from './webCrypto';
-import { arrayBufferToString, formatMessage as formatMessage, getStringLengthInBytes, stringToArrayBuffer, useThrottle } from './util';
+import { arrayBufferToString, formatMessage, formatTime, getStringLengthInBytes, stringToArrayBuffer, useThrottle } from './util';
 import { pki } from 'node-forge';
 
 const aesContents = document.getElementById('aes-contents') as HTMLTextAreaElement;
@@ -16,8 +16,8 @@ const rsaCryptoOutput = document.getElementById('rsa-crypto-output') as HTMLText
 const rsaForgeButton = document.getElementById('rsa-forge-button') as HTMLButtonElement;
 const rsaForgeOutput = document.getElementById('rsa-forge-output') as HTMLTextAreaElement;
 
-const getKeyGenerationBenchmarkMessage = formatMessage('key generation:', 'ms');
-const getEnDecrpytionBenchmarkMessage = formatMessage('En/Decryption:', 'ms');
+const getKeyGenerationBenchmarkMessage = formatMessage('key generation:');
+const getEnDecrpytionBenchmarkMessage = formatMessage('En/Decryption:');
 
 async function asyncBenchmark (func: () => Promise<void>, repeat = 1) {
   const start = performance.now();
@@ -74,7 +74,7 @@ function attachRunner () {
         throw new Error('AES Web Crypto logics not valid');
       }
     }, repeat);
-    aesCryptoOutput.value += interval.toString() + ' ms\n';
+    aesCryptoOutput.value += formatTime(interval) + '\n';
   });
 
   aesForgeButton.addEventListener('click', () => {
@@ -101,7 +101,7 @@ function attachRunner () {
         throw new Error('AES Forge logics not valid');
       }
     }, repeat);
-    aesForgeOutput.value += interval.toString() + ' ms\n';
+    aesForgeOutput.value += formatTime(interval) + '\n';
   });
 
   rsaCryptoButton.addEventListener('click', async () => {
@@ -116,7 +116,7 @@ function attachRunner () {
       privateKey = keyPair.privateKey;
       publicKey = keyPair.publicKey;
     });
-    rsaCryptoOutput.value += getKeyGenerationBenchmarkMessage(interval.toString());
+    rsaCryptoOutput.value += getKeyGenerationBenchmarkMessage(interval);
 
     interval = await asyncBenchmark(async () => {
       try {
@@ -129,7 +129,7 @@ function attachRunner () {
         throw new Error(e?.message || 'RSA Web Crypto failed. Possibly because the input message length is too long.');
       }
     }, repeat);
-    rsaCryptoOutput.value += getEnDecrpytionBenchmarkMessage(interval.toString());
+    rsaCryptoOutput.value += getEnDecrpytionBenchmarkMessage(interval);
   });
 
   rsaForgeButton.addEventListener('click', () => {
@@ -144,7 +144,7 @@ function attachRunner () {
       privateKey = keyPair.privateKey;
       publicKey = keyPair.publicKey;
     });
-    rsaForgeOutput.value += getKeyGenerationBenchmarkMessage(interval.toString());
+    rsaForgeOutput.value += getKeyGenerationBenchmarkMessage(interval);
 
     interval = benchmark(() => {
       const encryptedData = Forge.rsaEncrypt(data, publicKey);
@@ -153,7 +153,7 @@ function attachRunner () {
         throw new Error('RSA Forge logics not valid');
       }
     }, repeat);
-    rsaForgeOutput.value += getEnDecrpytionBenchmarkMessage(interval.toString());
+    rsaForgeOutput.value += getEnDecrpytionBenchmarkMessage(interval);
   });
 }
 

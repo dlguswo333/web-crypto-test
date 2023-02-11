@@ -21,10 +21,18 @@ export function getStringLengthInBytes (str: string) {
   return stringToArrayBuffer(str).length;
 }
 
-export function formatMessage (prefix: string, postfix: string) {
-  return function (log: string) {
-    return `${prefix} ${log} ${postfix}\n`;
+export function formatMessage (prefix: string) {
+  return function (ms: number) {
+    return `${prefix} ${formatTime(ms)}\n`;
   };
+}
+
+export function formatTime (ms: number, fractionDigits = 3) {
+  const rounder = 10 ** fractionDigits;
+  if (ms > 1000 * 10) { // Arbitrary number.
+    return (Math.floor(ms / 1000 * rounder) / rounder).toString() + ' sec';
+  }
+  return (Math.floor(ms * rounder) / rounder).toString() + ' ms';
 }
 
 export function useThrottle<T extends unknown[]> (func: (...args: T) => void, throttleMilliSecond: number) {
