@@ -1,5 +1,5 @@
-import { aesDecryptForge, aesEncryptForge, createRandomStringForge, createRsaKeyForge, rsaDecryptForge, rsaEncryptForge } from './forge';
-import { aesEncryptCrypto, createAesKeyCrypto, aesDecryptCrypto, createRandomBytesCrypto, createRsaKeyCrypto, rsaEncryptCrypto, rsaDecryptCrypto } from './webCrypto';
+import * as Forge from './forge';
+import * as WebCrypto from './webCrypto';
 import { arrayBufferToString, formatMessage as formatMessage, getStringLengthInBytes, stringToArrayBuffer, useThrottle } from './util';
 import { pki } from 'node-forge';
 
@@ -56,16 +56,16 @@ function attachRunner () {
       return;
     }
     const data = aesContents.value;
-    const key = await createAesKeyCrypto();
-    const iv = createRandomBytesCrypto(16);
+    const key = await WebCrypto.createAesKey();
+    const iv = WebCrypto.createRandomBytes(16);
 
     const interval = await asyncBenchmark(async () => {
-      const encryptedData = await aesEncryptCrypto(
+      const encryptedData = await WebCrypto.aesEncrypt(
         stringToArrayBuffer(data),
         iv,
         key
       );
-      const decryptedData = arrayBufferToString(await aesDecryptCrypto(
+      const decryptedData = arrayBufferToString(await WebCrypto.aesDecrypt(
         encryptedData,
         iv,
         key
@@ -83,16 +83,16 @@ function attachRunner () {
       return;
     }
     const data = aesContents.value;
-    const key = createRandomStringForge(32);
-    const iv = createRandomStringForge(16);
+    const key = Forge.createRandomString(32);
+    const iv = Forge.createRandomString(16);
 
     const interval = benchmark(() => {
-      const encryptedData = aesEncryptForge(
+      const encryptedData = Forge.aesEncrypt(
         data,
         iv,
         key
       );
-      const decryptedData = aesDecryptForge(
+      const decryptedData = Forge.aesDecrypt(
         encryptedData,
         iv,
         key
@@ -112,7 +112,7 @@ function attachRunner () {
     const data = rsaContents.value;
     let privateKey: CryptoKey, publicKey: CryptoKey;
     let interval = await asyncBenchmark(async () => {
-      const keyPair = await createRsaKeyCrypto();
+      const keyPair = await WebCrypto.createRsaKey();
       privateKey = keyPair.privateKey;
       publicKey = keyPair.publicKey;
     });
@@ -120,8 +120,8 @@ function attachRunner () {
 
     interval = await asyncBenchmark(async () => {
       try {
-        const encryptedData = await rsaEncryptCrypto(stringToArrayBuffer(data), publicKey);
-        const decryptedData = arrayBufferToString(await rsaDecryptCrypto(encryptedData, privateKey));
+        const encryptedData = await WebCrypto.rsaEncrypt(stringToArrayBuffer(data), publicKey);
+        const decryptedData = arrayBufferToString(await WebCrypto.rsaDecrypt(encryptedData, privateKey));
         if (data !== decryptedData) {
           throw new Error('RSA Web Crypto logics not valid');
         }
@@ -140,15 +140,15 @@ function attachRunner () {
     const data = rsaContents.value;
     let privateKey: pki.rsa.PrivateKey, publicKey: pki.rsa.PublicKey;
     let interval = benchmark(() => {
-      const keyPair = createRsaKeyForge();
+      const keyPair = Forge.createRsaKey();
       privateKey = keyPair.privateKey;
       publicKey = keyPair.publicKey;
     });
     rsaForgeOutput.value += getKeyGenerationBenchmarkMessage(interval.toString());
 
     interval = benchmark(() => {
-      const encryptedData = rsaEncryptForge(data, publicKey);
-      const decryptedData = rsaDecryptForge(encryptedData, privateKey);
+      const encryptedData = Forge.rsaEncrypt(data, publicKey);
+      const decryptedData = Forge.rsaDecrypt(encryptedData, privateKey);
       if (data !== decryptedData) {
         throw new Error('RSA Forge logics not valid');
       }

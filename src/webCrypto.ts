@@ -1,11 +1,11 @@
-export async function createAesKeyCrypto () {
+export async function createAesKey () {
   return crypto.subtle.generateKey({
     name: 'AES-CBC',
     length: 256,
   }, true, ['encrypt', 'decrypt']);
 }
 
-export async function aesEncryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key: CryptoKey): Promise<ArrayBuffer> {
+export async function aesEncrypt (data: ArrayBuffer, iv: ArrayBuffer, key: CryptoKey): Promise<ArrayBuffer> {
   const result = await crypto.subtle.encrypt({
     name: 'AES-CBC',
     iv: iv,
@@ -13,7 +13,7 @@ export async function aesEncryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key:
   return result;
 }
 
-export async function aesDecryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key: CryptoKey): Promise<ArrayBuffer> {
+export async function aesDecrypt (data: ArrayBuffer, iv: ArrayBuffer, key: CryptoKey): Promise<ArrayBuffer> {
   const result = await crypto.subtle.decrypt({
     name: 'AES-CBC',
     iv: iv,
@@ -21,7 +21,7 @@ export async function aesDecryptCrypto (data: ArrayBuffer, iv: ArrayBuffer, key:
   return result;
 }
 
-export async function createRsaKeyCrypto () {
+export async function createRsaKey () {
   const keyPair = await window.crypto.subtle.generateKey(
     {
       name: 'RSA-OAEP',
@@ -38,21 +38,21 @@ export async function createRsaKeyCrypto () {
   return keyPair;
 }
 
-export async function rsaEncryptCrypto (data: ArrayBuffer, key: CryptoKey) {
+export async function rsaEncrypt (data: ArrayBuffer, key: CryptoKey) {
   const result = await crypto.subtle.encrypt({
     name: 'RSA-OAEP',
   }, key, data);
   return result;
 }
 
-export async function rsaDecryptCrypto (data: ArrayBuffer, key: CryptoKey) {
+export async function rsaDecrypt (data: ArrayBuffer, key: CryptoKey) {
   const result = await crypto.subtle.decrypt({
     name: 'RSA-OAEP',
   }, key, data);
   return result;
 }
 
-export function createRandomBytesCrypto (length: number) {
+export function createRandomBytes (length: number) {
   const bytes = new Uint8Array(length);
   return crypto.getRandomValues(bytes);
 }
